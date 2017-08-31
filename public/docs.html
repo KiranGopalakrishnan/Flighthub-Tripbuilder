@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+  <link href="./css/main.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <title>Trip Builder API Docs</title>
+</head>
+<body>
+  <div class="main_wrapper">
+    <div class="hero_area">
+      <h1>Trip Builder API Docs</h1>
+      <h4>Version 1.0</h4>
+    </div>
+    <div class="main_content">
+      <div class="docs_panel">
+
+        <div class="content_panel">
+          <span class="api_heading"><code>/api/GET/airports</code></span>
+          <table class="doc_table">
+            <tbody><tr>
+              <th valign="top">
+                Title
+              </th>
+              <td>
+                <span class="caption">Get All Airports</span> <br>
+
+              </td>
+            </tr>
+
+            <tr>
+              <th valign="top">
+                URL
+              </th>
+              <td>
+                <span class="caption"><code>/api/GET/airports</code></span> <br>
+
+              </td>
+            </tr>
+
+            <tr>
+              <th valign="top">
+                Method
+              </th>
+              <td>
+                <span class="caption"><b><code>GET</code></b></span> <br>
+
+              </td>
+            </tr>
+
+            <tr>
+              <th valign="top">
+                URL Params
+              </th>
+              <td>
+                <span class="caption">None</span> <br>
+              </td>
+            </tr>
+
+            <tr>
+              <th valign="top">
+                Data Params
+              </th>
+              <td>
+                <span class="caption">None</span> <br>
+              </td>
+            </tr>
+
+            <tr>
+              <th valign="top">
+                Success Response
+              </th>
+              <td>
+                <b>Code:</b> 200 <br>
+                <b>Content:</b><pre>
+                  {
+                    "timestamp":1504067611,
+                    "status":200,
+                    "results":[
+                    {
+                      "airportId":"1",
+                      "name":"MTL",
+                      "city":"Montreal",
+                      "country":"CA",
+                      "IATA_Code":"YUL",
+                      "status":"1"
+                    }
+                    ]
+                  }
+                </pre><br>
+              </td>
+            </tr>
+
+            <tr>
+              <th valign="top">
+                Error Response
+              </th>
+              <td>
+                <b>Code:</b> 500 INTERNAL ERROR <br>
+                <b>Content:</b> <code> <pre>{
+                  "timestamp":1504067611,
+                  "status":500,
+                  "results":"An Error Occured"
+                }</pre></code><br>
+              </td>
+            </tr>
+
+            <tr>
+              <th valign="top">
+                Sample Call
+              </th>
+              <td>
+                <pre>
+                  curl -v /api/GET/airports
+              </pre>
+            </td>
+          </tr>
+
+          <tr>
+            <th valign="top">
+              Notes
+            </th>
+            <td>
+              <span class="caption">None</span> <br>
+            </td>
+          </tr>
+        </tbody></table>
+      </div>
+      <div class="content_panel">
+        <span class="api_heading"><code>/api/GET/trips/flights/fromAirport={fromAirport}&toAirport={toAirport}</code></span>
+        <table class="doc_table">
+          <tbody><tr>
+            <th valign="top">
+              Title
+            </th>
+            <td>
+              <span class="caption">Get All flights for a trip</span> <br>
+
+            </td>
+          </tr>
+
+          <tr>
+            <th valign="top">
+              URL
+            </th>
+            <td>
+              <span class="caption"><code>/api/GET/trips/flights/fromAirport={fromAirport}&toAirport={toAirport}</code></span> <br>
+
+            </td>
+          </tr>
+
+          <tr>
+            <th valign="top">
+              Method
+            </th>
+            <td>
+              <span class="caption"><b><code>GET</code></b></span> <br>
+
+            </td>
+          </tr>
+
+          <tr>
+            <th valign="top">
+              URL Params
+            </th>
+            <td>
+                <span class="caption"><b>fromAirport</b> - A valid id of the source airport</span>
+<br/>
+                    <span class="caption"><b>toAirport</b> - A valid id of the destination airport</span>
+            </td>
+          </tr>
+
+          <tr>
+            <th valign="top">
+              Data Params
+            </th>
+            <td>
+              <span class="caption">None</span> <br>
+            </td>
+          </tr>
+
+          <tr>
+            <th valign="top">
+              Success Response
+            </th>
+            <td>
+              <b>Code:</b> 200 <br>
+              <b>Content:</b><pre>
+<code>
+{
+   "timestamp":1504072822,
+   "status":200,
+   "tripId":"3",
+   "results":[
+      {
+         "flightId":"1",
+         "flightName":"Emirates",
+         "fromAirport":[
+            {
+               "airportId":"1",
+               "name":"MTL",
+               "IATA_Code":"",
+               "city":"Montreal",
+               "country":"CA"
+            }
+         ],
+         "toAirport":[
+            {
+               "airportId":"2",
+               "name":"YUL",
+               "IATA_Code":"",
+               "city":"Toronto",
+               "country":"CA"
+            }
+         ]
+      }
+   ]
+}
+    </code>
+            </pre><br>
+            </td>
+          </tr>
+
+          <tr>
+            <th valign="top">
+              Error Response
+            </th>
+            <td>
+              <b>Code:</b> 500 INTERNAL ERROR <br>
+              <b>Content:</b> <code> <pre>
+              {
+                "timestamp":1504067611,
+                "status":500,
+                "results":"An Error Occured"
+              }
+            </pre></code><br>
+              <b>Code:</b> 400 INVALID ARGUMENTS <br>
+              <b>Content:</b> <code> <pre>
+              {
+                "timestamp":1504067611,
+                "status":400,
+                "results":"Invalid Arguments"
+              }
+            </pre></code><br>
+            </td>
+          </tr>
+
+          <tr>
+            <th valign="top">
+              Sample Call
+            </th>
+            <td>
+                <code>
+                curl -v /api/GET/trips/flights/fromAirport=1&toAirport=45
+              </code>
+          </td>
+        </tr>
+
+        <tr>
+          <th valign="top">
+            Notes
+          </th>
+          <td>
+            <span class="caption">None</span> <br>
+          </td>
+        </tr>
+      </tbody></table>
+    </div>
+    <div class="content_panel">
+      <span class="api_heading"><code>/api/POST/trips/{tripId}/flights/add</code></span>
+      <table class="doc_table">
+        <tbody><tr>
+          <th valign="top">
+            Title
+          </th>
+          <td>
+            <span class="caption">Add flight to a trip</span> <br>
+
+          </td>
+        </tr>
+
+        <tr>
+          <th valign="top">
+            URL
+          </th>
+          <td>
+            <span class="caption"><code>/api/POST/trips/{tripId}/flights/add</code></span> <br>
+
+          </td>
+        </tr>
+
+        <tr>
+          <th valign="top">
+            Method
+          </th>
+          <td>
+            <span class="caption"><b><code>POST</code></b></span> <br>
+
+          </td>
+        </tr>
+
+        <tr>
+          <th valign="top">
+            URL Params
+          </th>
+          <td>
+              <span class="caption"><b>tripId</b> - A valid id of the trip</span>
+          </td>
+        </tr>
+
+        <tr>
+          <th valign="top">
+            Data Params
+          </th>
+          <td>
+            <span class="caption">
+                <pre>
+  {
+      "flightName":"name of the fight",
+      "fromAirport": "A valid airport id of source airport"
+      "toAirport": "A valid airport id of destination airport"
+  }
+              </pre>
+            </span> <br>
+          </td>
+        </tr>
+
+        <tr>
+          <th valign="top">
+            Success Response
+          </th>
+          <td>
+            <b>Code:</b> 200 <br>
+            <b>Content:</b><pre>
+  <code>
+  {
+    "timestamp":1504104841,
+    "status":200,
+    "results":{"successful":true}
+  }
+  </code>
+          </pre><br>
+          </td>
+        </tr>
+
+        <tr>
+          <th valign="top">
+            Error Response
+          </th>
+          <td>
+            <b>Code:</b> 500 INTERNAL ERROR <br>
+            <b>Content:</b> <code> <pre>
+            {
+              "timestamp":1504067611,
+              "status":500,
+              "message":"An Error Occured"
+            }
+          </pre></code><br>
+            <b>Code:</b> 400 INVALID ARGUMENTS <br>
+            <b>Content:</b> <code> <pre>
+            {
+              "timestamp":1504067611,
+              "status":400,
+              "message":"Invalid Arguments"
+            }
+          </pre></code><br>
+          <b>Code:</b> 422 UNPROCCESSABLE REQUEST<br>
+          <b>Content:</b> <code> <pre>
+          {
+            "timestamp":1504067611,
+            "status":400,
+            "message":"Either fromAirport ID or toAirport ID is Invalid"
+          }
+        </pre></code><br>
+          </td>
+        </tr>
+
+        <tr>
+          <th valign="top">
+            Sample Call
+          </th>
+          <td>
+              <code>
+              curl -v --data "flightName=flight1&fromAirport=2&toAirport=1" /api/POST/trips/3/flights/add
+            </code>
+        </td>
+      </tr>
+
+    </tbody></table>
+  </div>
+
+  <div class="content_panel">
+    <span class="api_heading"><code>/api/DELETE/trips/{tripId}/flights/delete</code></span>
+    <table class="doc_table">
+      <tbody><tr>
+        <th valign="top">
+          Title
+        </th>
+        <td>
+          <span class="caption">Delete flight from a trip</span> <br>
+
+        </td>
+      </tr>
+
+      <tr>
+        <th valign="top">
+          URL
+        </th>
+        <td>
+          <span class="caption"><code>api/DELETE/trips/{tripId}/flights/delete</code></span> <br>
+
+        </td>
+      </tr>
+
+      <tr>
+        <th valign="top">
+          Method
+        </th>
+        <td>
+          <span class="caption"><b><code>DELETE</code></b></span> <br>
+
+        </td>
+      </tr>
+
+      <tr>
+        <th valign="top">
+          URL Params
+        </th>
+        <td>
+            <span class="caption"><b>tripId</b> - A valid id of the trip</span>
+        </td>
+      </tr>
+
+      <tr>
+        <th valign="top">
+          Data Params
+        </th>
+        <td>
+          <span class="caption">
+              <pre>
+              {
+                "flightId":"Id of the flight"
+              }
+            </pre>
+          </span> <br>
+        </td>
+      </tr>
+
+      <tr>
+        <th valign="top">
+          Success Response
+        </th>
+        <td>
+          <b>Code:</b> 200 <br>
+          <b>Content:</b><pre>
+<code>
+{
+  "timestamp":1504104841,
+  "status":200,
+  "results":{"successful":true}
+}
+</code>
+        </pre><br>
+        </td>
+      </tr>
+
+      <tr>
+        <th valign="top">
+          Error Response
+        </th>
+        <td>
+          <b>Code:</b> 500 INTERNAL ERROR <br>
+          <b>Content:</b> <code> <pre>
+          {
+            "timestamp":1504067611,
+            "status":500,
+            "message":"An Error Occured"
+          }
+        </pre></code><br>
+        <b>Code:</b> 422 - UNPROCESSABLE REQUEST <br>
+        <b>Content:</b> <code> <pre>
+  {
+    "timestamp":1504067611,
+    "status":422,
+    "message":"Flight doesn't exist OR have
+     already been deleted"
+  }
+        </pre></code><br>
+          <b>Code:</b> 400 INVALID ARGUMENTS <br>
+          <b>Content:</b> <code> <pre>
+  {
+    "timestamp":1504067611,
+    "status":400,
+    "message":"Invalid Arguments"
+  }
+        </pre></code><br>
+        </td>
+      </tr>
+
+      <tr>
+        <th valign="top">
+          Sample Call
+        </th>
+        <td>
+            <code>
+              curl -v -X "DELETE" --data "flightId=13"  /api/DELETE/trips/3/flights/delete
+          </code>
+      </td>
+    </tr>
+
+
+  </tbody></table>
+</div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>
