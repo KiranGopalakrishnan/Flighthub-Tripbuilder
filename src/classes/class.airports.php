@@ -17,11 +17,13 @@ class airports
   }
 
   /**
-  * Retrieves all airports in alphabetical order
+  * Retrieves all airports in alphabetical order from positions startLimit to endLimit
+  **@param startLimit - starting position of results to fetch
+  **@param endLimit - ending position of results to fetch
   **@return Array
   **/
 
-  public function getAirports(){
+  public function getAirports($startLimit,$endLimit){
     $responseStatus = 200;
     $message = null;
     $data = null;
@@ -35,11 +37,21 @@ class airports
       $message = "An internal error occured";
       //connection error
     }
+    $parameterCheck = is_numeric($startLimit)&&is_numeric($endLimit)&&($startLimit<$endLimit);
+    if(!$parameterCheck){
+      $responseStatus = 400;
+      $message = "Invalid arguments";
+      //connection error
+    }
     if($responseStatus==200){
+      $startLimit = (int)$startLimit;
+      $endLimit = (int)$endLimit;
       //Parameters as name => paramName,value => paramValue ,type => PDO::PARAM_TYPE
       $params = array();
-      $params[count($params)] = $this->db->prepData(":status",$status,PDO::PARAM_INT);
-      $sql = "SELECT * FROM airports WHERE status = :status  ORDER BY name";
+      $params[0] = $this->db->prepData(":status",$status,PDO::PARAM_INT);
+      $params[1] = $this->db->prepData(":startLimit",$startLimit,PDO::PARAM_INT);
+      $params[2] = $this->db->prepData(":endLimit",$endLimit,PDO::PARAM_INT);
+      $sql = "SELECT * FROM airports WHERE status = :status ORDER BY name LIMIT :startLimit,:endLimit";
       $stmt = $this->db->buildQuery($sql,$params);
 
       //Executing The prepared statement and fetching results

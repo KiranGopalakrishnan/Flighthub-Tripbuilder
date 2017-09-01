@@ -66,12 +66,20 @@ $app->get('/api', function (Request $request, Response $response) {
 *@param none
 **@return JSON
 **/
-$app->get('/api/GET/airports[/limit={limitBy}]', function (Request $request, Response $response) {
+$app->get('/api/GET/airports[/start={startLimit}&end={endLimit}]', function (Request $request, Response $response) {
   $result = null;
+  $startLimit = 0;
+  $endLimit = PHP_INT_MAX;
+  if($request->getAttribute('startLimit')!==null){
+  $startLimit = $request->getAttribute('startLimit');
+  }
+  if($request->getAttribute('endLimit')!==null){
+  $endLimit = $request->getAttribute('endLimit');
+  }
   $db = new database();
   $jsonCreater = new jsonCreater();
   $airports = new airports($db,$jsonCreater);
-  $result = $airports->getAirports();
+  $result = $airports->getAirports($startLimit,$endLimit);
   //Setting the response to JSON
   $response = $response->withJson($result,200);
   return $response;
