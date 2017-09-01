@@ -92,7 +92,10 @@ class trip{
   }
 
   /**
-  * Adds a flight to a tripId
+  **Adds a flight to a tripId
+  **Checks if a trip exists between fromAirport &toAirport
+  **And creates a new trip if the trip doesnt aready exists
+  **If the trip does exist the flight is added to the existing trip
   **@param tripId - Id of the trip
   **@param flightName - Name of the flight
   **@param fromAirport - id of the starting point airport
@@ -100,7 +103,7 @@ class trip{
   **@return Array
   **/
 
-  public function addFlight($tripId,$flightName,$fromAirport,$toAirport){
+  public function addFlight($flightName,$fromAirport,$toAirport){
 
     $status = 1;
     $result = null;
@@ -114,7 +117,7 @@ class trip{
     $toAirport = strip_tags($toAirport);
     ///Checking if the parameters meets the constraints
     $parameterCheck = is_numeric($fromAirport)&&
-    is_numeric($toAirport)&&is_numeric($tripId);
+    is_numeric($toAirport)&&($fromAirport!==$toAirport);
 
     if(!$parameterCheck){
       //Constraint checks failed
@@ -132,13 +135,23 @@ class trip{
     //Checking if the fromAirport ID is valid and exists in airports table
     $isValidFromAirport= count($this->airports->getAirportById($fromAirport))>0?true:false;
     $isValidToAirport= count($this->airports->getAirportById($toAirport))>0?true:false;
-
-    if(!$isValidFromAirport&&!$isValidToAirport){
-      //Invalid fromAirport and toAirport ID's
+    if(!$isValidFromAirport||!$isValidToAirport){
+      //Invalid fromAirport OR toAirport ID's
       $responseStatus = 422;
-      $message = "Invalid airport ID's for either fromAirport or toAirport";
+      $message = "Invalid airport ID for either fromAirport or toAirport";
     }
+
     if($responseStatus==200){
+      $tripId = null;
+      //Checking for existing trip data
+      $existingTripData = $this->getTripId($fromAirport,$toAirport);
+      $doesTripExist = count($existingTripData)>0?true:false;
+      if($doesTripExist){
+        $tripId = $existingTripData[0]["tripId"];
+      }else{
+        //Creates a new trip
+        $tripId = $this->createNewTrip($fromAirport,$toAirport);
+      }
       //Parameters as name => paramName,value => paramValue ,type => PDO::PARAM_TYPE
       $params = array();
       $params[0] = $this->db->prepData(":flightName",$flightName,PDO::PARAM_STR);
@@ -183,10 +196,8 @@ class trip{
     $responseStatus = 200;
     $message = null;
     $result = null;
-    //Constraint checks for arguments
-    $constraints = new constraints();
     //Escaping the variable for an added layer of security
-    $parameterCheck = $constraints->IntParameterCheck($flightId);
+    $parameterCheck = is_numeric($flightId);
     if(!$parameterCheck){
       //Constraint checks failed
       $responseStatus = 400;
@@ -258,6 +269,72 @@ class trip{
         //Executing the prepared statement
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      }catch(PDOException $e){
+        $result = false;
+      }
+    }else {
+      $result = false;
+    }
+    return $result;
+    //end of function
+  }
+  /**
+  **Retrieves the trip from trips table based on fromAirport and toAirport
+  **@param fromAirport
+  **@param toAirport
+  **@return Array/false
+  **/
+  private function getTripId($fromAirport,$toAirport){
+
+    $result = false;
+    $connection = $this->db->connect();
+    if($connection){
+
+      //Parameters as name => paramName,value => paramValue ,type => PDO::PARAM_TYPE
+      $params = array();
+      $params[0] = $this->db->prepData(":fromAirport",$fromAirport,PDO::PARAM_STR);
+      $params[1] = $this->db->prepData(":toAirport",$toAirport,PDO::PARAM_STR);
+      $params[2] = $this->db->prepData(":status",1,PDO::PARAM_INT);
+      $sql = "SELECT tripId FROM trips  WHERE status = :status AND fromAirport = :fromAirport AND toAirport = :toAirport";
+      try{
+        $stmt = $this->db->buildQuery($sql,$params);
+        //Executing the prepared statement
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      }catch(PDOException $e){
+        $result = false;
+      }
+    }else {
+      $result = false;
+    }
+    return $result;
+    //end of function
+  }
+  /**
+  * Create a new trip based on fromAirport and toAirport
+  **@param fromAirport
+  **@param toAirport
+  **@return newly created tripId/false
+  **/
+  private function createNewTrip($fromAirport,$toAirport){
+
+    $result = false;
+    $connection = $this->db->connect();
+    if($connection){
+      //Parameters as name => paramName,value => paramValue ,type => PDO::PARAM_TYPE
+      $params = array();
+      $params[0] = $this->db->prepData(":fromAirport",$fromAirport,PDO::PARAM_STR);
+      $params[1] = $this->db->prepData(":toAirport",$toAirport,PDO::PARAM_STR);
+      $params[2] = $this->db->prepData(":status",1,PDO::PARAM_INT);
+      $sql = "INSERT INTO `trips`(`fromAirport`, `toAirport`, `status`) VALUES (:fromAirport,:toAirport,:status)";
+      try{
+        $stmt = $this->db->buildQuery($sql,$params);
+        //Executing the prepared statement
+        $queryResult = $stmt->execute();
+        $tripId = $this->db->lastInsertId();
+        if($queryResult){
+          $result = $tripId;
+        }
       }catch(PDOException $e){
         $result = false;
       }

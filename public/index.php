@@ -69,7 +69,8 @@ $app->get('/api/GET/airports', function (Request $request, Response $response) {
 /**
 * Get flights for a trip
 **@RequestType GET
-*@param tripId
+*@param fromAirport
+*@param toAirport
 **@return JSON
 **/
 
@@ -99,11 +100,11 @@ $app->get('/api/GET/trips/flights/fromAirport={fromAirport}&toAirport={toAirport
 **@return JSON
 **/
 
-$app->post('/api/POST/trips/{tripId}/flights/add', function (Request $request, Response $response) {
+$app->post('/api/POST/trips/flights/add', function (Request $request, Response $response) {
 
   $postData = $request->getParsedBody();
   $flightName = $postData["flightName"];
-  $tripId = $request->getAttribute('tripId');
+  //$tripId = $request->getAttribute('tripId');
   $fromAirport = $postData["fromAirport"];
   $toAirport = $postData["toAirport"];
 
@@ -112,7 +113,7 @@ $app->post('/api/POST/trips/{tripId}/flights/add', function (Request $request, R
   $airports = new airports($db,$jsonCreater);
   $trips = new trip($db,$jsonCreater,$airports);
 
-  $result = $trips->addFlight($tripId,$flightName,$fromAirport,$toAirport);
+  $result = $trips->addFlight($flightName,$fromAirport,$toAirport);
   //Setting the response to JSON
   $response = $response->withJson($result,200);
   return $response;
