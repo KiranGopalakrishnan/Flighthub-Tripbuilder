@@ -24,11 +24,11 @@ on the project folder root.
 
 ### Installing
 
-##Setting up the database
+## Setting up the database
 You can find the database credentials in src/classes/db.ini file.
 Update the file according to your db credentials / Follow the default instalation routine provided below
 
-#Installation using default db credentials
+# Installation using default db credentials
 
 You need to create a MySql database with the name "trip_builder"
 and import the file trip_builder.sql (Can be found on the project root folder)

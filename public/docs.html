@@ -55,7 +55,10 @@
                 URL Params
               </th>
               <td>
-                <span class="caption">None</span> <br>
+                <span class="caption">[OPTIONAL]</span> <br>
+              </br><b>start</b> - Starting position of results to fetch - defaults to 0
+            </br><b>end</b> - End position of results to fetch - defaults to PHP_INT_MAX
+          </br> <b>Example :</b> <code>/api/GET/airports/start=0&end=10</code>
               </td>
             </tr>
 
@@ -103,6 +106,12 @@
                   "timestamp":1504067611,
                   "status":500,
                   "results":"An Error Occured"
+                }</pre></code><br>
+                <b>Code:</b> 400 INVALID ARGUMENTS <br>
+                <b>Content:</b> <code> <pre>{
+                  "timestamp":1504067611,
+                  "status":500,
+                  "results":"Invalid arguments"
                 }</pre></code><br>
               </td>
             </tr>
@@ -228,6 +237,15 @@
               Error Response
             </th>
             <td>
+            <br>
+              <b>Code:</b> 404 No results found <br>
+              <b>Content:</b> <code> <pre>
+              {
+                "timestamp":1504067611,
+                "status":404,
+                "results":"No results found"
+              }
+            </pre></code><br>
               <b>Code:</b> 500 INTERNAL ERROR <br>
               <b>Content:</b> <code> <pre>
               {
