@@ -11,14 +11,19 @@
     * Response json status is set to the response
     * @param status
     * @param message - optional
-    * @return Array/false
+    * @return void
     **/
     public function setStatus($status,$message = null){
       $this->response["status"] = $status;
       if($message !== null){
         $this->response["message"] = $message;
       }
-    }
+    }/**
+    * Additional data is set to the response
+    * @param name - name of the data to set
+    * @param value - value of the data to set
+    * @return void
+    **/
     public function setAdditionalData($name,$value){
       if($name !== null && $value !== null){
         $this->response[$name] = $value;
@@ -35,7 +40,11 @@
       if(isset($data)&&$data !== null){
       $this->response[$name] = $data;
     }
-    }
+    }/**
+    * Returns the response array
+    **@param none
+    **@return array
+    **/
     public function createResponse(){
       return $this->response;
     }
