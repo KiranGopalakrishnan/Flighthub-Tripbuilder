@@ -1,31 +1,50 @@
-<<<<<<< HEAD
-# Slim Framework 3 Skeleton Application
+# Project Title
 
-Use this skeleton application to quickly setup and start working on a new Slim Framework 3 application. This application uses the latest Slim 3 with the PHP-View template renderer. It also uses the Monolog logger.
+Tripbuilder API v1
 
-This skeleton application was built for Composer. This makes setting up a new Slim Framework application quick and easy.
+## Docs
 
-## Install the Application
+  Find the documentation for the project at https://levels8.com/flighthub/public/api
 
-Run this command from the directory in which you want to install your new Slim Framework application.
+## Getting Started
 
-    php composer.phar create-project slim/slim-skeleton [my-app-name]
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-Replace `[my-app-name]` with the desired directory name for your new application. You'll want to:
+You can find the live deployed version of the project on https://levels8.com/flighthub/public/api
 
-* Point your virtual host document root to your new application's `public/` directory.
-* Ensure `logs/` is web writeable.
+### Prerequisites
 
-To run the application in development, you can also run this command. 
+The repo is already up to date with the latest dependancies
+But if you want to update the dependancies yourself run
+```
+composer update
+```
+on the project folder root.
 
-	php composer.phar start
 
-Run this command to run the test suite
+### Installing
 
-	php composer.phar test
+##Setting up the database
+You can find the database credentials in src/classes/db.ini file.
+Update the file according to your db credentials / Follow the default instalation routine provided below
 
-That's it! Now go build something cool.
-=======
-# flighthub-tripbuilder
-A trip builder RESTful API Built on Slim PHP Framework
->>>>>>> a24187e0c76aae361fa01836bc0a2d9689790856
+#Installation using default db credentials
+
+You need to create a MySql database with the name "trip_builder"
+and import the file trip_builder.sql (Can be found on the project root folder)
+into the database.
+
+Once you are done with importing the sql file , Create a user as with the credentials specified in db.ini
+on the database and grant all privillages to the user.
+
+Once you are done , Push the files to the server
+
+and you can access the project at www.yourdomain.com/public/api
+
+Test your rpoject Installation by accessing the docs at www.yourdomain.com/public/api
+
+End with an example of getting some data out of the system or using it for a little demo
+
+## Deployment
+
+Add additional notes about how to deploy this on a live system
