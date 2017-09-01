@@ -1,7 +1,6 @@
 <?php
 require_once ("class.database.php");
 require_once ("class.jsonCreater.php");
-require_once ("class.constraints.php");
 require_once ("class.airports.php");
 /**
 * The purpose of this class is to contain all functions which can be perfomed on a trip
@@ -32,10 +31,10 @@ class trip{
     $result = null;
     $responseStatus = 200; //Initial status
     $message = null;
+    $tripId = null;
     $data = null; //Will contain the fetched results
 
     //constraints check
-    $constraints = new constraints();
     $parameterCheck = is_numeric($fromAirport)&&is_numeric($toAirport);
 
     if(!$parameterCheck){
@@ -51,6 +50,11 @@ class trip{
       $message = "An Error Occured";
     }
     if($responseStatus==200){
+      $existingTripData = $this->getTripId($fromAirport,$toAirport);
+      $doesTripExist = count($existingTripData)>0?true:false;
+      if($doesTripExist){
+        $tripId = $existingTripData[0]["tripId"];
+      }
       //Parameters as name => paramName,value => paramValue ,type => PDO::PARAM_TYPE
       $params = array();
       $params[0] = $this->db->prepData(":toAirport",$toAirport,PDO::PARAM_STR);
@@ -82,6 +86,7 @@ class trip{
 
     //Json Response Creation
     $this->jsonCreater->setStatus($responseStatus,$message);
+    $this->jsonCreater->setAdditionalData("tripId",$tripId);
     $this->jsonCreater->setAdditionalData("fromAirport",$fromAirport);
     $this->jsonCreater->setAdditionalData("toAirport",$toAirport);
     $this->jsonCreater->setData($data);

@@ -38,6 +38,18 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 $app = new \Slim\App;
 
+$app->options('/{routes:.+}', function ($request, $response, $args) {
+    return $response;
+});
+//CORS control
+$app->add(function ($req, $res, $next) {
+    $response = $next($req, $res);
+    return $response
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+});
+
 
 $app->get('/api', function (Request $request, Response $response) {
   $file = '../public/docs.html';
@@ -54,8 +66,7 @@ $app->get('/api', function (Request $request, Response $response) {
 *@param none
 **@return JSON
 **/
-$app->get('/api/GET/airports', function (Request $request, Response $response) {
-
+$app->get('/api/GET/airports[/limit={limitBy}]', function (Request $request, Response $response) {
   $result = null;
   $db = new database();
   $jsonCreater = new jsonCreater();
@@ -104,7 +115,6 @@ $app->post('/api/POST/trips/flights/add', function (Request $request, Response $
 
   $postData = $request->getParsedBody();
   $flightName = $postData["flightName"];
-  //$tripId = $request->getAttribute('tripId');
   $fromAirport = $postData["fromAirport"];
   $toAirport = $postData["toAirport"];
 
@@ -112,7 +122,6 @@ $app->post('/api/POST/trips/flights/add', function (Request $request, Response $
   $jsonCreater = new jsonCreater();
   $airports = new airports($db,$jsonCreater);
   $trips = new trip($db,$jsonCreater,$airports);
-
   $result = $trips->addFlight($flightName,$fromAirport,$toAirport);
   //Setting the response to JSON
   $response = $response->withJson($result,200);
@@ -121,7 +130,8 @@ $app->post('/api/POST/trips/flights/add', function (Request $request, Response $
 });
 /**
 * Remove flights from a trip
-**@RequestType GET
+**@RequestType DELETE
+*@param tripId - Passed via URL
 *@param flightId - Passed via URL
 **@return JSON
 **/
