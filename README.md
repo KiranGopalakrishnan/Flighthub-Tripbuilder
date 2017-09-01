@@ -14,10 +14,8 @@ You can find the live deployed version of the project on https://levels8.com/fli
 
 ### Prerequisites
 
-The repo is already up to date with the latest dependancies
-But if you want to update the dependancies yourself run
 ```
-composer update
+composer install
 ```
 on the project folder root.
 
