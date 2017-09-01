@@ -1,6 +1,6 @@
-# Project Title
+# Tripbuilder API v1
 
-Tripbuilder API v1
+
 
 ## Docs
 
@@ -41,7 +41,7 @@ Once you are done , Push the files to the server
 
 and you can access the project at www.yourdomain.com/public/api
 
-Test your rpoject Installation by accessing the docs at www.yourdomain.com/public/api
+Test your poject Installation by accessing the docs at www.yourdomain.com/public/api
 
 End with an example of getting some data out of the system or using it for a little demo
 
